@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  mifos-chat-db:
+    image: postgres:15-alpine
+    container_name: mifos_ai_postgres
+    restart: always # Automatically restarts if the server reboots
+    environment:
+      POSTGRES_USER: mifos
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mifos_chat
+    ports:
+      - "5433:5432"
+    volumes:
+      # This named volume ensures your chat history data is NOT lost 
+      # when the container stops or is recreated.
+      - mifos_chat_data:/var/lib/postgresql/data
+
+volumes:
+  # The physical storage on the host machine where the DB is saved
+  mifos_chat_data:
